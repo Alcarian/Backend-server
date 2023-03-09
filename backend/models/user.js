@@ -1,9 +1,28 @@
-const mysql = require("mysql");
+const users = [];
 
-// le modele de base de donnée pour enregistrer un nouvel utilisateur
-const userSchema = mysql.Schema({
-  email: { type: string, required: true, unique: true },
-  password: { type: string, required: true },
-});
+class User {
+  constructor(nom, email, password) {
+    this.nbrCouvert = nbrCouvert;
+    this.nom = nom;
+    this.email = email;
+    this.password = password;
+  }
 
-module.exports = mysql.model("user", userSchema);
+  static findByEmail(email) {
+    return users.find((user) => user.email === email);
+  }
+
+  save() {
+    users.push(this);
+  }
+
+  static verifyPassword(user, password) {
+    return user.password === password;
+  }
+
+  static estValideChiffre(nbrCouvert) {
+    return nbrCouvert >= 1 && nbrCouvert <= 10;
+  }
+}
+
+module.exports = User;

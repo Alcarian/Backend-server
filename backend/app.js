@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mysql = require("./config/db");
 const http = require("http");
+const userRoutes = require("./routes/userRoute");
 
 // créer une application express
 const app = express();
@@ -28,6 +29,9 @@ app.use((req, res, next) => {
 
 // transformer le body en format json utilisable
 app.use(bodyparser.json());
+
+// route d'authentification
+app.use("/api/authentification", userRoutes);
 
 //exporter l'application
 module.exports = app;

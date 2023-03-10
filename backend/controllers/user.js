@@ -17,35 +17,30 @@ const User = require("../models/User");
 
 // signup pour enregistrer le nouvel utilisateur dans la bdd
 exports.signup = (req, res) => {
-  // console.log("CONTENUE req.body - controllers/user.js");
-  // console.log(req.body);
+  const { nbrCouvert, nom, email, password } = req.body;
+
+  // Instance de la class User
+  const user = new User(nbrCouvert, nom, email, password);
 
   // chiffrer l'email avant envoi bdd
-  const emailCryptojs = cryptojs
-    .HmacSHA256(req.body.email, `${process.env.CLE_DE_CHIFFREMENT_EMAIL}`)
-    .toString();
+  const emailChiffre = user.emailChiffrement();
 
   //hasher le mdp avant envoie dans la bdd
-  bcrypt
-    .hash(req.body.password, 10)
+  user
+    .hashPassword()
     .then((hash) => {
-      // ce qui va etre enregistrer dans mysql
-      // console.log(emailCryptojs, hash);
-
-      //les données à envoyer
-      const user = {
-        nbrCouvert: req.body.nbrCouvert,
-        nom: req.body.nom,
-        email: emailCryptojs,
+      // Les données à envoyer dans la requète sql
+      const data = {
+        nbrCouvert: nbrCouvert,
+        nom: nom,
+        email: emailChiffre,
         password: hash,
       };
-
-      // console.log(user);
 
       // la requète sql pour envoyer les données dans la table user
       mysqlConnection.query(
         "INSERT INTO user SET ?",
-        user,
+        data,
         (error, results) => {
           if (error) {
             console.log(error);
@@ -58,34 +53,29 @@ exports.signup = (req, res) => {
         }
       );
     })
-
     .catch((error) => res.status(500).json({ error }.json(console.log(error))));
 };
 
 // Login pour s'authentifier
 exports.login = (req, res, next) => {
+  const { nbrCouvert, nom, email, password } = req.body;
+
   // Le contenu de la requète
 
-  //chiffrer l'email de la requète
-  const emailCryptojs = cryptojs
-    .HmacSHA256(req.body.email, `${process.env.CLE_DE_CHIFFREMENT_EMAIL}`)
-    .toString();
-  // console.log(emailCryptojs);
+  //instance de la classe User
+  const user = new User(nbrCouvert, nom, email, password);
 
-  const email = emailCryptojs;
+  //chiffrer l'email de la requète
+  const emailChiffre = user.emailChiffrement();
 
   // Chercher dans la bdd si l'email utilisateur est bien présent
   mysqlConnection.query(
     "SELECT * FROM user WHERE email = ? ",
-    email,
+    emailChiffre,
     (error, results) => {
       if (error) {
-        console.log(error);
         res.json({ error });
       } else {
-        console.log("===> results");
-        console.log(results);
-
         // Si l'email utilisateur n'est pas présent dans la bdd
         if (results == 0) {
           return res
@@ -97,9 +87,6 @@ exports.login = (req, res, next) => {
         bcrypt
           .compare(req.body.password, results[0].password)
           .then((controlPassword) => {
-            console.log("==> controlPassword");
-            console.log(controlPassword);
-
             // Si le mdp est incorrect
             if (!controlPassword) {
               return res
@@ -109,8 +96,6 @@ exports.login = (req, res, next) => {
 
             // Si le password est correct
             // Envoi dans la response du serveur : userId et le token d'authentification JWT
-            console.log("==> password");
-            console.log(results[0].password);
 
             // Génération du token JWT
             const token = jwt.sign(
@@ -119,7 +104,6 @@ exports.login = (req, res, next) => {
               `${process.env.JWT_KEY_TOKEN}`,
               { expiresIn: "12" }
             );
-            console.log(token);
 
             // réponse du serveur avec le userId et le token
             res.status(201).json({

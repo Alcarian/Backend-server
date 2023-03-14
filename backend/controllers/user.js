@@ -1,9 +1,6 @@
 // import de bcrypt pour hasher les password
 const bcrypt = require("bcrypt");
 
-// import crypto-js pour chiffrer les mails
-const cryptojs = require("crypto-js");
-
 // import de jsonwebtoken pour généré les token d'authentification
 const jwt = require("jsonwebtoken");
 
@@ -13,6 +10,7 @@ const result = dotenv.config();
 //import mysqlConnection
 const mysqlConnection = require("../config/db");
 
+//import models base de données
 const User = require("../models/User");
 
 // signup pour enregistrer le nouvel utilisateur dans la bdd
@@ -57,7 +55,7 @@ exports.signup = (req, res) => {
 };
 
 // Login pour s'authentifier
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
   // Le contenu de la requète
@@ -100,9 +98,9 @@ exports.login = (req, res, next) => {
             // Génération du token JWT
             const token = jwt.sign(
               //3 arguments
-              { unserId: results[0].id },
+              { userId: results[0].id },
               `${process.env.JWT_KEY_TOKEN}`,
-              { expiresIn: "12" }
+              { expiresIn: "12h" }
             );
 
             // réponse du serveur avec le userId et le token

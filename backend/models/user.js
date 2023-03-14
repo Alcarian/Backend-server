@@ -22,7 +22,7 @@ class User {
       .toString();
     return emailCryptojs;
   }
-  // Méthde pour hasher le mdp
+  // Méthode pour hasher le mdp
   hashPassword = async function () {
     try {
       const hashPassword = bcrypt.hash(this.password, 10);

@@ -15,7 +15,9 @@ router.get("/", auth, formUserController.readAllFormUser);
 
 router.get("/:id", auth, formUserController.readOneFormUser);
 
-router.put("/:id", auth, formUserController.updateOneFormUser);
+router.put("/:id", formUserController.updateOneFormUser);
+
+router.delete("/:id", formUserController.deleteOneFormUser);
 
 // Exportation
 module.exports = router;

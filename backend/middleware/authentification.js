@@ -22,11 +22,13 @@ module.exports = (req, res, next) => {
     console.log("==>CONTENU : userId du decoded TOKEN");
     console.log(userIdDecodedToken);
 
+    userIdParamsUrl = req.originalUrl.split("=")[1];
+
     console.log("==> UserId REQ body request");
     console.log(req.body.form_user.userId);
 
     // Comparer les userId
-    // console.log("==> req.body : TRUE");
+
     if (req.body.form_user.userId == userIdDecodedToken) {
       next();
     } else {

@@ -156,11 +156,9 @@ exports.updateOneFormUser = async (req, res) => {
               "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements"
             );
             // throw "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements";
-            res
-              .status(403)
-              .json({
-                message: "vous n'ètes pas autorisé à modifier les données",
-              });
+            res.status(403).json({
+              message: "vous n'ètes pas autorisé à modifier les données",
+            });
           }
         }
       }
@@ -171,6 +169,78 @@ exports.updateOneFormUser = async (req, res) => {
 };
 
 exports.deleteOneFormUser = async (req, res) => {
-  console.log("==> ROUTE DELETE");
-  console.log(req.params.id);
+  try {
+    // Aller chercher l'id de l'objet a supprimer dans la requête
+    const id = req.params.id;
+    console.log("**** ID ****");
+    console.log(id);
+
+    const querySql = "SELECT * FROM form_user WHERE id_form_user = ?";
+
+    const ficheUser = await mysqlConnection.query(
+      querySql,
+      [id],
+      (error, results) => {
+        if (error) {
+          res.json({ error });
+        } else {
+          console.log("==> RESULTS");
+          console.log(results);
+
+          // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
+          if (results != 0) {
+            console.log("Présence de l'objet dans la base de donnée");
+          } else {
+            console.log("Objet non présent dans la base de donnée");
+            return res.status(404).json({
+              message: "pas d'objet a supprimer dans la base de donnée",
+            });
+          }
+
+          // Controle autaurisation de la modification par l'userId
+          userIdParamsUrl = req.originalUrl.split("=")[1];
+          console.log("==> USER ID PARAMS URL");
+          console.log(userIdParamsUrl);
+          console.log(results[0].form_user_userId);
+
+          if (userIdParamsUrl == results[0].form_user_userId) {
+            console.log("Authorization pour SUPPRESSION de l'objet");
+
+            // Mettre à jour la base de donnée
+            // Ma requète PHPmyadmin pour supprimer la data
+            // DELETE FROM `form_user` WHERE `id_form_user` = ?
+
+            const querySql = `
+            DELETE FROM form_user
+            WHERE id_form_user = ?
+            `;
+
+            const values = [id];
+            console.log("**VALUES DELETE**");
+            console.log(values);
+
+            // La connexion a la base de donnée
+            mysqlConnection.query(querySql, values, (error, results) => {
+              if (error) {
+                res.status(500).json({ error });
+              } else {
+                res.status(201).json({
+                  message: "Objet effacé dans la base de donnée",
+                  results,
+                });
+              }
+            });
+          } else {
+            console.log("Pas autorisé");
+            res.status(403).json({
+              message: "Vous n'êtes pas autorisé a supprimer les données",
+            });
+          }
+        }
+      }
+    );
+    //
+  } catch (error) {
+    res.status(500).json({ error: error, message: "ERREUR !" });
+  }
 };

@@ -26,7 +26,10 @@ exports.createFormUser = async (req, res) => {
         if (error) {
           res.json({ error });
         } else {
-          res.status(200).json({ results });
+          res.status(200).json({
+            message: "Fiche utilisateur créé !",
+            results,
+          });
         }
       }
     );
@@ -54,14 +57,10 @@ exports.readAllFormUser = async (req, res) => {
 };
 
 exports.readOneFormUser = async (req, res) => {
-  console.log("===> ROUTE GETONEFORMUSER");
-  console.log(req.params.id);
-  console.log({ id_form_user: req.params.id });
-
   try {
     const id = req.params.id;
-    console.log("==> CONST ID");
-    console.log(id);
+    // console.log("==> CONST ID");
+    // console.log(id);
     const querySql = "SELECT * FROM `form_user` WHERE `id_form_user` = ?";
 
     const ficheUser = await mysqlConnection.query(
@@ -84,8 +83,8 @@ exports.updateOneFormUser = async (req, res) => {
   // console.log("==> ROUTE PUT");
   // console.log(req.params.id);
 
-  console.log("==> CONTENU BODY");
-  console.log(req.body);
+  // console.log("==> CONTENU BODY");
+  // console.log(req.body);
 
   // Aller chercher l'objet dans la table form_user
   try {
@@ -104,30 +103,23 @@ exports.updateOneFormUser = async (req, res) => {
 
           // Controle autaurisation de la modification par l'userId
           userIdParamsUrl = req.originalUrl.split("=")[1];
-          console.log("==> USER ID PARAMS URL");
-          console.log(userIdParamsUrl);
-          console.log(results[0].form_user_userId);
 
           if (userIdParamsUrl == results[0].form_user_userId) {
             console.log("Authorization pour modif objet");
 
             // L'objet qui va ètre mis à jour dans la base de donnée
-            console.log("==> CONTENU : REQ.BODY");
-            console.log(req.body);
+            // console.log("==> CONTENU : REQ.BODY");
+            // console.log(req.body);
 
-            console.log("==> CONENU : req.body.ficheUser");
-            console.log(req.body.form_user);
+            // console.log("==> CONENU : req.body.ficheUser");
+            // console.log(req.body.form_user);
 
             const userFormObject = req.body.form_user;
-            console.log("==> CONENU :userFormObject");
-            console.log(userFormObject);
 
             // Mettre à jour la base de donnée
             // UPDATE `form_user` SET `form_user_name`= ?,`nbr_couverts`= ? WHERE `id_form_user` = ?
 
             const { nom, nbrCouverts } = userFormObject;
-            console.log("===>********");
-            console.log(nom, nbrCouverts);
 
             const querySql = `
             UPDATE form_user SET
@@ -137,9 +129,6 @@ exports.updateOneFormUser = async (req, res) => {
             `;
 
             const values = [nom, nbrCouverts, id];
-
-            console.log("===> *** VALUES ***");
-            console.log(values);
 
             mysqlConnection.query(querySql, values, (error, results) => {
               if (error) {
@@ -172,8 +161,6 @@ exports.deleteOneFormUser = async (req, res) => {
   try {
     // Aller chercher l'id de l'objet a supprimer dans la requête
     const id = req.params.id;
-    console.log("**** ID ****");
-    console.log(id);
 
     const querySql = "SELECT * FROM form_user WHERE id_form_user = ?";
 
@@ -199,9 +186,6 @@ exports.deleteOneFormUser = async (req, res) => {
 
           // Controle autaurisation de la modification par l'userId
           userIdParamsUrl = req.originalUrl.split("=")[1];
-          console.log("==> USER ID PARAMS URL");
-          console.log(userIdParamsUrl);
-          console.log(results[0].form_user_userId);
 
           if (userIdParamsUrl == results[0].form_user_userId) {
             console.log("Authorization pour SUPPRESSION de l'objet");
@@ -216,8 +200,6 @@ exports.deleteOneFormUser = async (req, res) => {
             `;
 
             const values = [id];
-            console.log("**VALUES DELETE**");
-            console.log(values);
 
             // La connexion a la base de donnée
             mysqlConnection.query(querySql, values, (error, results) => {

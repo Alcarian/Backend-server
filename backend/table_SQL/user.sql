@@ -6,3 +6,8 @@ CREATE TABLE `user` (
     `password` VARCHAR(75) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
     `timestamp` DATETIME NULL DEFAULT CURRENT_TIMESTAMP;
 )
+
+// Contrainte du nombre de couverts entre 1 et 10 personnes
+
+
+ALTER TABLE `user` MODIFY `nbrCouverts` INTEGER NOT NULL CHECK (`nbrCouverts` >= 1 AND `nbrCouverts` <= 10);

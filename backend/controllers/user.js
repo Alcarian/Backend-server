@@ -106,6 +106,7 @@ exports.login = (req, res) => {
             // réponse du serveur avec le userId et le token
             res.status(201).json({
               userId: results[0].id,
+              message: "Utilisateur logué !",
               token,
             });
           })

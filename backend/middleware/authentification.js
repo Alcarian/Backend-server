@@ -4,28 +4,26 @@ const dotenv = require("dotenv");
 // Exportation de la function du middleware
 module.exports = (req, res, next) => {
   try {
-    console.log("==> MIIDLEWARE AUTH");
-    console.log(req.headers.authorization);
+    // console.log("==> MIIDLEWARE AUTH");
+    // console.log(req.headers.authorization);
 
     // récupérer le token dans le header authorization avec bearer token
     const token = req.headers.authorization.split(" ")[1];
-    console.log("==> TOKEN");
-    console.log(token);
+    // console.log("==> TOKEN");
+    // console.log(token);
 
     // décoder le token
     const decodedToken = jwt.verify(token, `${process.env.JWT_KEY_TOKEN}`);
-    console.log("==> CONTENU : decodedToken");
-    console.log(decodedToken);
+    // console.log("==> CONTENU : decodedToken");
+    // console.log(decodedToken);
 
     // récupérer le userId du token déchiffré
     const userIdDecodedToken = decodedToken.userId;
-    console.log("==>CONTENU : userId du decoded TOKEN");
-    console.log(userIdDecodedToken);
+    // console.log("==>CONTENU : userId du decoded TOKEN");
+    // console.log(userIdDecodedToken);
 
-    userIdParamsUrl = req.originalUrl.split("=")[1];
-
-    console.log("==> UserId REQ body request");
-    console.log(req.body.form_user.userId);
+    // console.log("==> UserId REQ body request");
+    // console.log(req.body.form_user.userId);
 
     // Comparer les userId
 

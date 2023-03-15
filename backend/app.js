@@ -4,6 +4,7 @@ const mysql = require("./config/db");
 const http = require("http");
 const userRoutes = require("./routes/userRoute");
 const formUserRoutes = require("./routes/FormUserRoute");
+const menuRoutes = require("./routes/menuRoute");
 
 // créer une application express
 const app = express();
@@ -36,6 +37,9 @@ app.use("/api/authentification", userRoutes);
 
 // route formUser
 app.use("/api/form_user", formUserRoutes);
+
+// route menu
+app.use("/api/menu", menuRoutes);
 
 //exporter l'application
 module.exports = app;

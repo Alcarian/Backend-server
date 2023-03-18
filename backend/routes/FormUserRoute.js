@@ -13,7 +13,7 @@ router.post("/", auth, formUserController.createFormUser);
 
 router.get("/", auth, formUserController.readAllFormUser);
 
-router.get("/:id", auth, formUserController.readOneFormUser);
+router.get("/fiche/", auth, formUserController.readOneFormUser);
 
 router.put("/:id", formUserController.updateOneFormUser);
 

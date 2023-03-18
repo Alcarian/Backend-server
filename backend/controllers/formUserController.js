@@ -39,6 +39,7 @@ exports.createFormUser = async (req, res) => {
 };
 
 exports.readAllFormUser = async (req, res) => {
+  console.log("==> JE SUIS DANS ALL");
   try {
     const ficheUser = await mysqlConnection.query(
       "SELECT * FROM `form_user` WHERE ?",
@@ -57,23 +58,23 @@ exports.readAllFormUser = async (req, res) => {
 };
 
 exports.readOneFormUser = async (req, res) => {
-  try {
-    const id = req.params.id;
-    // console.log("==> CONST ID");
-    // console.log(id);
-    const querySql = "SELECT * FROM `form_user` WHERE `id_form_user` = ?";
+  console.log("==> JE SUIS DANS ONE");
+  console.log("==> ORIGINALURL");
+  console.log(req.originalUrl.split("=")[1]);
 
-    const ficheUser = await mysqlConnection.query(
-      querySql,
-      [id],
-      (error, results) => {
-        if (error) {
-          res.json({ error });
-        } else {
-          res.status(200).json({ results });
-        }
+  try {
+    const id = req.originalUrl.split("=")[1];
+    console.log("==> CONST ID");
+    console.log(id);
+    const querySql = "SELECT * FROM `form_user` WHERE `form_user_userId` = ?";
+
+    await mysqlConnection.query(querySql, [id], (error, results) => {
+      if (error) {
+        res.json({ error });
+      } else {
+        res.status(200).json({ results });
       }
-    );
+    });
   } catch (error) {
     res.status(500).json({ error });
   }

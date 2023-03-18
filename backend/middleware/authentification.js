@@ -19,19 +19,30 @@ module.exports = (req, res, next) => {
 
     // récupérer le userId du token déchiffré
     const userIdDecodedToken = decodedToken.userId;
-    // console.log("==>CONTENU : userId du decoded TOKEN");
-    // console.log(userIdDecodedToken);
+    console.log("==>CONTENU : userId du decoded TOKEN");
+    console.log(userIdDecodedToken);
 
     // console.log("==> UserId REQ body request");
     // console.log(req.body.form_user.userId);
 
+    userIdParamsUrl = req.originalUrl.split("=")[1];
+    console.log("==> USERIDPARAMSURL <==");
+    console.log(userIdParamsUrl);
+
     // Comparer les userId
 
-    if (req.body.form_user.userId == userIdDecodedToken) {
+    // if (req.body.form_user.userId == userIdDecodedToken) {
+    //   next();
+    // } else {
+    //   console.log("==> ERREUR Authentification");
+    //   throw "erreur identification userId";
+    // }
+
+    if (userIdParamsUrl == userIdDecodedToken) {
+      console.log("AUTHENTIFICATION OK => MIDDLEWARE SUIVANT");
       next();
     } else {
-      console.log("==> ERREUR Authentification");
-      throw "erreur identification userId";
+      throw "Erreur identification : userId incorrect";
     }
 
     // s'il y a des erreurs dans le try on les récupère ici

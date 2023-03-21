@@ -5,6 +5,6 @@ CREATE TABLE `quai_antique`.`booking` (
   `heures` TIME NOT NULL,
   `nom` VARCHAR(50) NOT NULL,
   `Num_téléphone` VARCHAR(20) NOT NULL,
-  `email` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(75) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

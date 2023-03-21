@@ -5,9 +5,10 @@ const mysqlConnection = require("../config/db");
 const bookingModel = require("../models/BookingModels");
 
 exports.postBooking = async (req, res) => {
-  const bookingObject = req.body.form_user;
+  const bookingObject = req.body;
 
-  const { NbrPersonnes, date, heures, nom, Num_téléphone } = bookingObject;
+  const { NbrPersonnes, date, heures, nom, Num_téléphone, email } =
+    bookingObject;
 
   // Instance booking
   const booking = new bookingModel(
@@ -15,7 +16,8 @@ exports.postBooking = async (req, res) => {
     date,
     heures,
     nom,
-    Num_téléphone
+    Num_téléphone,
+    email
   );
 
   // console.log("==> CONTENUE booking");
@@ -23,14 +25,14 @@ exports.postBooking = async (req, res) => {
 
   // Enregistrer l'objet dans la bdd
   try {
-    const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone) VALUE (?) `;
-    const values = [NbrPersonnes, date, heures, nom, Num_téléphone];
+    const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
+    const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
     await mysqlConnection.query(querySql, [values], (error, results) => {
       if (error) {
         res.json({ error });
       } else {
         res.status(200).json({
-          message: "Fiche utilisateur créé !",
+          message: "Réservation effectuée!",
           results,
         });
       }

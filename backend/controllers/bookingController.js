@@ -20,9 +20,6 @@ exports.postBooking = async (req, res) => {
     email
   );
 
-  // console.log("==> CONTENUE booking");
-  // console.log(booking);
-
   // Enregistrer l'objet dans la bdd
   try {
     const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;

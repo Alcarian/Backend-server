@@ -164,8 +164,8 @@ exports.userUpdate = async (req, res) => {
           // console.log("==> CONTENU : REQ.BODY");
           // console.log(req.body);
 
-          // console.log("==> CONENU : req.body.ficheUser");
-          // console.log(req.body.form_user);
+          // console.log("==> CONENU : req.body.user");
+          // console.log(req.body.user);
 
           const userFormObject = req.body;
           console.log("******userFormObject******");
@@ -248,7 +248,6 @@ exports.deleteUser = async (req, res) => {
 
           // Mettre à jour la base de donnée
           // Ma requète PHPmyadmin pour supprimer la data
-          // DELETE FROM `form_user` WHERE `id_form_user` = ?
 
           const querySql = `
             DELETE FROM user

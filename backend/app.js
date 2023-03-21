@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const mysql = require("./config/db");
 const http = require("http");
 const userRoutes = require("./routes/userRoute");
-const formUserRoutes = require("./routes/FormUserRoute");
 const menuRoutes = require("./routes/menuRoute");
 const adminRoutes = require("./routes/adminRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
@@ -36,9 +35,6 @@ app.use(bodyparser.json());
 
 // route d'authentification
 app.use("/api/authentification", userRoutes);
-
-// route formUser
-app.use("/api/form_user", formUserRoutes);
 
 // route menu
 app.use("/api/menu", menuRoutes);

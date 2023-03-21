@@ -9,9 +9,9 @@ const dotenv = require("dotenv");
 const result = dotenv.config();
 
 class User {
-  constructor(nbrCouvert, nom, email, password) {
+  constructor(nbrCouvert, Nom, email, password) {
     this.nbrCouvert = nbrCouvert;
-    this.nom = nom;
+    this.Nom = Nom;
     this.email = email;
     this.password = password;
   }

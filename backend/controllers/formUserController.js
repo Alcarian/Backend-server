@@ -19,20 +19,16 @@ exports.createFormUser = async (req, res) => {
   try {
     const querySql = `INSERT INTO form_user(form_user_userId, form_user_name, nbr_couverts) VALUE (?) `;
     const values = [userId, nom, nbrCouverts];
-    const ficheUser = await mysqlConnection.query(
-      querySql,
-      [values],
-      (error, results) => {
-        if (error) {
-          res.json({ error });
-        } else {
-          res.status(200).json({
-            message: "Fiche utilisateur créé !",
-            results,
-          });
-        }
+    await mysqlConnection.query(querySql, [values], (error, results) => {
+      if (error) {
+        res.json({ error });
+      } else {
+        res.status(200).json({
+          message: "Fiche utilisateur créé !",
+          results,
+        });
       }
-    );
+    });
   } catch (err) {
     res.status(500).json({ error: err });
   }
@@ -165,63 +161,59 @@ exports.deleteOneFormUser = async (req, res) => {
 
     const querySql = "SELECT * FROM form_user WHERE id_form_user = ?";
 
-    const ficheUser = await mysqlConnection.query(
-      querySql,
-      [id],
-      (error, results) => {
-        if (error) {
-          res.json({ error });
+    await mysqlConnection.query(querySql, [id], (error, results) => {
+      if (error) {
+        res.json({ error });
+      } else {
+        console.log("==> RESULTS");
+        console.log(results);
+
+        // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
+        if (results != 0) {
+          console.log("Présence de l'objet dans la base de donnée");
         } else {
-          console.log("==> RESULTS");
-          console.log(results);
+          console.log("Objet non présent dans la base de donnée");
+          return res.status(404).json({
+            message: "pas d'objet a supprimer dans la base de donnée",
+          });
+        }
 
-          // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
-          if (results != 0) {
-            console.log("Présence de l'objet dans la base de donnée");
-          } else {
-            console.log("Objet non présent dans la base de donnée");
-            return res.status(404).json({
-              message: "pas d'objet a supprimer dans la base de donnée",
-            });
-          }
+        // Controle autaurisation de la modification par l'userId
+        userIdParamsUrl = req.originalUrl.split("=")[1];
 
-          // Controle autaurisation de la modification par l'userId
-          userIdParamsUrl = req.originalUrl.split("=")[1];
+        if (userIdParamsUrl == results[0].form_user_userId) {
+          console.log("Authorization pour SUPPRESSION de l'objet");
 
-          if (userIdParamsUrl == results[0].form_user_userId) {
-            console.log("Authorization pour SUPPRESSION de l'objet");
+          // Mettre à jour la base de donnée
+          // Ma requète PHPmyadmin pour supprimer la data
+          // DELETE FROM `form_user` WHERE `id_form_user` = ?
 
-            // Mettre à jour la base de donnée
-            // Ma requète PHPmyadmin pour supprimer la data
-            // DELETE FROM `form_user` WHERE `id_form_user` = ?
-
-            const querySql = `
+          const querySql = `
             DELETE FROM form_user
             WHERE id_form_user = ?
             `;
 
-            const values = [id];
+          const values = [id];
 
-            // La connexion a la base de donnée
-            mysqlConnection.query(querySql, values, (error, results) => {
-              if (error) {
-                res.status(500).json({ error });
-              } else {
-                res.status(201).json({
-                  message: "Objet effacé dans la base de donnée",
-                  results,
-                });
-              }
-            });
-          } else {
-            console.log("Pas autorisé");
-            res.status(403).json({
-              message: "Vous n'êtes pas autorisé a supprimer les données",
-            });
-          }
+          // La connexion a la base de donnée
+          mysqlConnection.query(querySql, values, (error, results) => {
+            if (error) {
+              res.status(500).json({ error });
+            } else {
+              res.status(201).json({
+                message: "Objet effacé dans la base de donnée",
+                results,
+              });
+            }
+          });
+        } else {
+          console.log("Pas autorisé");
+          res.status(403).json({
+            message: "Vous n'êtes pas autorisé a supprimer les données",
+          });
         }
       }
-    );
+    });
     //
   } catch (error) {
     res.status(500).json({ error: error, message: "ERREUR !" });

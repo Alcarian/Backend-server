@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoute");
 const formUserRoutes = require("./routes/FormUserRoute");
 const menuRoutes = require("./routes/menuRoute");
 const adminRoutes = require("./routes/adminRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 // créer une application express
 const app = express();
@@ -44,6 +45,12 @@ app.use("/api/menu", menuRoutes);
 
 // route admin
 app.use("/api/admin", adminRoutes);
+
+//route users
+app.use("/api/users", userRoutes);
+
+//route booking
+app.use("/api/booking", bookingRoutes);
 
 //exporter l'application
 module.exports = app;

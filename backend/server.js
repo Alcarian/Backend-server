@@ -8,10 +8,10 @@ const dotenv = require("dotenv");
 const result = dotenv.config();
 
 // paramètre du port
-app.set("port", process.env.PORT);
+app.set("port", process.env.MYSQLPORT);
 
 // crée le serveur
 const server = http.createServer(app);
 
 // écoute les requètes sur le port
-server.listen(process.env.PORT);
+server.listen(process.env.MYSQLPORT);

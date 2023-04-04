@@ -24,16 +24,18 @@ exports.postBooking = async (req, res) => {
   try {
     const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
     const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
-    await mysqlConnection.query(querySql, [values], (error, results) => {
-      if (error) {
-        res.json({ error });
-      } else {
-        res.status(200).json({
-          message: "Réservation effectuée!",
-          results,
-        });
-      }
-    });
+    await mysqlConnection
+      .promise()
+      .query(querySql, [values], (error, results) => {
+        if (error) {
+          res.json({ error });
+        } else {
+          res.status(200).json({
+            message: "Réservation effectuée!",
+            results,
+          });
+        }
+      });
   } catch (err) {
     res.status(500).json({ error: err });
   }

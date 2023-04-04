@@ -71,6 +71,7 @@ exports.login = (req, res) => {
     "SELECT * FROM user WHERE email = ? ",
     emailChiffre,
     (error, results) => {
+      console.log(results);
       if (error) {
         res.json({ error });
       } else {

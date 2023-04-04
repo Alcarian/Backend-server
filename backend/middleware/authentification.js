@@ -30,14 +30,6 @@ module.exports = (req, res, next) => {
     // console.log(userIdParamsUrl);
 
     // Comparer les userId
-
-    // if (req.body.form_user.userId == userIdDecodedToken) {
-    //   next();
-    // } else {
-    //   console.log("==> ERREUR Authentification");
-    //   throw "erreur identification userId";
-    // }
-
     if (userIdParamsUrl == userIdDecodedToken) {
       console.log("AUTHENTIFICATION OK => MIDDLEWARE SUIVANT");
       next();

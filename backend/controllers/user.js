@@ -59,12 +59,13 @@ exports.login = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
   // Le contenu de la requète
-  console.log("*****REQ.BODY*********");
-  console.log(req.body);
+  // console.log("*****REQ.BODY*********");
+  // console.log(req.body);
+
   //instance de la classe User
   const user = new User(nbrCouvert, nom, email, password);
-  console.log("*******user********");
-  console.log(user);
+  // console.log("*******user********");
+  // console.log(user);
 
   //chiffrer l'email de la requète
   const emailChiffre = user.emailChiffrement();
@@ -129,7 +130,7 @@ exports.readInfos = async (req, res) => {
     console.log(id);
     const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
-    await mysqlConnection.promise().query(querySql, [id], (error, results) => {
+    mysqlConnection.query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {

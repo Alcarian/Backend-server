@@ -59,7 +59,8 @@ exports.login = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
   // Le contenu de la requète
-
+  console.log("*****REQ.BODY*********");
+  console.log(req.body);
   //instance de la classe User
   const user = new User(nbrCouvert, nom, email, password);
   console.log("*******user********");

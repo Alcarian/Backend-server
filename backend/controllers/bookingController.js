@@ -2,7 +2,7 @@
 const mysqlConnection = require("../config/db");
 
 // Import models base de données
-const bookingModel = require("../models/bookingModels");
+const bookingModel = require("../models/BookingModels");
 
 exports.postBooking = async (req, res) => {
   const bookingObject = req.body;

@@ -124,7 +124,7 @@ exports.readInfos = async (req, res) => {
     console.log(id);
     const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
-    await mysqlConnection.query(querySql, [id], (error, results) => {
+    await mysqlConnection.promise().query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {

@@ -11,7 +11,7 @@ const result = dotenv.config();
 const mysqlConnection = require("../config/db");
 
 //import models base de données
-const User = require("../models/User");
+const User = require("../models/userModel");
 
 // signup pour enregistrer le nouvel utilisateur dans la bdd
 exports.signup = (req, res) => {

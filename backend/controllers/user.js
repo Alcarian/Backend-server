@@ -151,7 +151,7 @@ exports.userUpdate = async (req, res) => {
     );
     console.log(querySql);
 
-    await mysqlConnection.query(querySql, [id], (error, results) => {
+    await mysqlConnection.promise().query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {
@@ -181,7 +181,7 @@ exports.userUpdate = async (req, res) => {
 
           const { Nom, nbrCouvert } = userFormObject;
 
-          const querySql = `
+          const updateSql = `
             UPDATE user SET
             Nom= ?,
             nbrCouvert= ?
@@ -192,16 +192,18 @@ exports.userUpdate = async (req, res) => {
           console.log("********values*******");
           console.log(values);
 
-          mysqlConnection.query(querySql, values, (error, results) => {
-            if (error) {
-              res.status(500).json({ error });
-            } else {
-              res.status(201).json({
-                message: "Mise a jour ok dans la base de donnée",
-                results,
-              });
-            }
-          });
+          mysqlConnection
+            .promise()
+            .query(updateSql, values, (error, results) => {
+              if (error) {
+                res.status(500).json({ error });
+              } else {
+                res.status(201).json({
+                  message: "Mise a jour ok dans la base de donnée",
+                  results,
+                });
+              }
+            });
         } else {
           console.log(
             "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements"

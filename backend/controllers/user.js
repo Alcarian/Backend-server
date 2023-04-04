@@ -67,53 +67,57 @@ exports.login = (req, res) => {
   const emailChiffre = user.emailChiffrement();
 
   // Chercher dans la bdd si l'email utilisateur est bien présent
-  mysqlConnection.query(
-    "SELECT * FROM user WHERE email = ? ",
-    emailChiffre,
-    (error, results) => {
-      if (error) {
-        res.json({ error });
-      } else {
-        // Si l'email utilisateur n'est pas présent dans la bdd
-        if (results == 0) {
-          return res
-            .status(404)
-            .json({ error: "Utilisateur pas présent dans la base de donnée" });
+  mysqlConnection
+    .promise()
+    .query(
+      "SELECT * FROM user WHERE email = ? ",
+      emailChiffre,
+      (error, results) => {
+        if (error) {
+          res.json({ error });
+        } else {
+          // Si l'email utilisateur n'est pas présent dans la bdd
+          if (results == 0) {
+            return res
+              .status(404)
+              .json({
+                error: "Utilisateur pas présent dans la base de donnée",
+              });
+          }
+
+          // Controler la validité du password envoyé par le front
+          bcrypt
+            .compare(req.body.password, results[0].password)
+            .then((controlPassword) => {
+              // Si le mdp est incorrect
+              if (!controlPassword) {
+                return res
+                  .status(401)
+                  .json({ error: "Le mot de passe est incorrect" });
+              }
+
+              // Si le password est correct
+              // Envoi dans la response du serveur : userId et le token d'authentification JWT
+
+              // Génération du token JWT
+              const token = jwt.sign(
+                //3 arguments
+                { userId: results[0].id },
+                `${process.env.JWT_KEY_TOKEN}`,
+                { expiresIn: "12h" }
+              );
+
+              // réponse du serveur avec le userId et le token
+              res.status(201).json({
+                userId: results[0].id,
+                message: "Utilisateur logué !",
+                token,
+              });
+            })
+            .catch((error) => res.status(500).json({ error }));
         }
-
-        // Controler la validité du password envoyé par le front
-        bcrypt
-          .compare(req.body.password, results[0].password)
-          .then((controlPassword) => {
-            // Si le mdp est incorrect
-            if (!controlPassword) {
-              return res
-                .status(401)
-                .json({ error: "Le mot de passe est incorrect" });
-            }
-
-            // Si le password est correct
-            // Envoi dans la response du serveur : userId et le token d'authentification JWT
-
-            // Génération du token JWT
-            const token = jwt.sign(
-              //3 arguments
-              { userId: results[0].id },
-              `${process.env.JWT_KEY_TOKEN}`,
-              { expiresIn: "12h" }
-            );
-
-            // réponse du serveur avec le userId et le token
-            res.status(201).json({
-              userId: results[0].id,
-              message: "Utilisateur logué !",
-              token,
-            });
-          })
-          .catch((error) => res.status(500).json({ error }));
       }
-    }
-  );
+    );
 };
 
 // Lire les infos user

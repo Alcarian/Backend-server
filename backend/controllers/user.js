@@ -65,13 +65,14 @@ exports.login = (req, res) => {
 
   //chiffrer l'email de la requète
   const emailChiffre = user.emailChiffrement();
+  console.log("*********emailChiffre*********");
+  console.log(emailChiffre);
 
   // Chercher dans la bdd si l'email utilisateur est bien présent
   mysqlConnection.query(
     "SELECT * FROM user WHERE email = ? ",
     emailChiffre,
     (error, results) => {
-      console.log(results);
       if (error) {
         res.json({ error });
       } else {

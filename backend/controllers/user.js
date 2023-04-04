@@ -62,6 +62,8 @@ exports.login = (req, res) => {
 
   //instance de la classe User
   const user = new User(nbrCouvert, nom, email, password);
+  console.log("*******user********");
+  console.log(user);
 
   //chiffrer l'email de la requète
   const emailChiffre = user.emailChiffrement();

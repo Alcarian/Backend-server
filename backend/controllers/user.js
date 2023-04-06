@@ -229,7 +229,7 @@ exports.deleteUser = async (req, res) => {
 
     const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
-    await mysqlConnection.promise().query(querySql, [id], (error, results) => {
+    await mysqlConnection.query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {

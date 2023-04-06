@@ -265,18 +265,16 @@ exports.deleteUser = async (req, res) => {
           const values = [id];
 
           // La connexion a la base de donnée
-          mysqlConnection
-            .promise()
-            .query(querySql, values, (error, results) => {
-              if (error) {
-                res.status(500).json({ error });
-              } else {
-                res.status(201).json({
-                  message: "Objet effacé dans la base de donnée",
-                  results,
-                });
-              }
-            });
+          mysqlConnection.query(querySql, values, (error, results) => {
+            if (error) {
+              res.status(500).json({ error });
+            } else {
+              res.status(201).json({
+                message: "Objet effacé dans la base de donnée",
+                results,
+              });
+            }
+          });
         } else {
           console.log("Pas autorisé");
           res.status(403).json({

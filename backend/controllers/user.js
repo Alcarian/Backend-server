@@ -220,7 +220,7 @@ exports.userUpdate = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = (req, res) => {
   try {
     // Aller chercher l'id de l'objet a supprimer dans la requête
     const id = req.originalUrl.split("=")[1];
@@ -229,7 +229,7 @@ exports.deleteUser = async (req, res) => {
 
     const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
-    await mysqlConnection.query(querySql, [id], (error, results) => {
+    mysqlConnection.query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {

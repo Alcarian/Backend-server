@@ -142,7 +142,7 @@ exports.readInfos = async (req, res) => {
   }
 };
 
-exports.userUpdate = async (req, res) => {
+exports.userUpdate = (req, res) => {
   try {
     const id = req.body.id;
     const querySql = "SELECT * FROM user WHERE id = ?";
@@ -151,7 +151,7 @@ exports.userUpdate = async (req, res) => {
     );
     console.log(req.body);
 
-    await mysqlConnection.promise().query(querySql, [id], (error, results) => {
+    mysqlConnection.promise().query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {

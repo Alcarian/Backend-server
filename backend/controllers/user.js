@@ -149,7 +149,7 @@ exports.userUpdate = async (req, res) => {
     console.log(
       "==> CONTENU : REQ.PARAMS***********************************************"
     );
-    console.log(id);
+    console.log(req.body);
 
     await mysqlConnection.promise().query(querySql, [id], (error, results) => {
       if (error) {

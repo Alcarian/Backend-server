@@ -151,7 +151,7 @@ exports.userUpdate = async (req, res) => {
     );
     console.log(id);
 
-    await mysqlConnection.query(querySql, [id], (error, results) => {
+    await mysqlConnection.promise().query(querySql, [id], (error, results) => {
       if (error) {
         res.json({ error });
       } else {
@@ -198,7 +198,7 @@ exports.userUpdate = async (req, res) => {
               if (error) {
                 res.status(500).json({ error });
               } else {
-                res.status(201).json({
+                res.status(200).json({
                   message: "Mise a jour ok dans la base de donnée",
                   results,
                 });

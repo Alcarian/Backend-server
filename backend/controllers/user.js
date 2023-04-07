@@ -184,12 +184,12 @@ exports.userUpdate = async (req, res) => {
       `;
 
       const values = [];
-      if (Nom !== "") {
+      if (Nom !== "undefined") {
         values.push(Nom);
       } else {
         values.push(results[0].Nom);
       }
-      if (nbrCouvert !== "") {
+      if (nbrCouvert !== "undefined") {
         values.push(nbrCouvert);
       } else {
         values.push(results[0].nbrCouvert);

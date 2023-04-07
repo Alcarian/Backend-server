@@ -192,18 +192,16 @@ exports.userUpdate = (req, res) => {
           console.log("********values*******");
           console.log(values);
 
-          mysqlConnection
-            .promise()
-            .query(updateSql, values, (error, results) => {
-              if (error) {
-                res.status(500).json({ error });
-              } else {
-                res.status(200).json({
-                  message: "Mise a jour ok dans la base de donnée",
-                  results,
-                });
-              }
-            });
+          mysqlConnection.query(updateSql, values, (error, results) => {
+            if (error) {
+              res.status(500).json({ error });
+            } else {
+              res.status(200).json({
+                message: "Mise a jour ok dans la base de donnée",
+                results,
+              });
+            }
+          });
         } else {
           console.log(
             "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements"

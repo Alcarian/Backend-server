@@ -174,6 +174,8 @@ exports.userUpdate = async (req, res) => {
       console.log(userFormObject);
 
       // Mise à jour de la base de données
+      const { Nom, nbrCouvert } = userFormObject;
+
       const updateSql = `
         UPDATE user SET
         Nom = ?,

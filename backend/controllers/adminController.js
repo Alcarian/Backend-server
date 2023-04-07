@@ -67,7 +67,7 @@ exports.updateMenu = (req, res) => {
         console.log("===> *****VALUE*****");
         console.log(values);
 
-        mysqlConnection.query(querySql, values, (error, results) => {
+        mysqlConnection.promise().query(querySql, values, (error, results) => {
           if (error) {
             res.status(500).json({ error });
           } else {

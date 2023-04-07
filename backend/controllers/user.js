@@ -158,7 +158,7 @@ exports.userUpdate = async (req, res) => {
     console.log(results);
 
     // Vérification de l'autorisation de modification par l'utilisateur
-    const userIdParamsUrl = req.body.userId;
+    const userIdParamsUrl = req.body.id;
     console.log("==> USERIDPARAMS <==");
     console.log(userIdParamsUrl);
 

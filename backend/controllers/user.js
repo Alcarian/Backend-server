@@ -123,7 +123,7 @@ exports.login = (req, res) => {
 };
 
 // Lire les infos user
-exports.readInfos = async (req, res) => {
+exports.readInfos = (req, res) => {
   try {
     const id = req.originalUrl.split("=")[1];
     console.log("==> CONST ID");
@@ -142,79 +142,32 @@ exports.readInfos = async (req, res) => {
   }
 };
 
-exports.userUpdate = (req, res) => {
+exports.userUpdate = async (req, res) => {
   try {
-    const id = req.body.id;
-    const querySql = "SELECT * FROM user WHERE id = ?";
-    console.log(
-      "==> CONTENU : REQ.PARAMS***********************************************"
-    );
-    console.log(req.body);
+    const { id, Nom, nbrCouvert } = req.body;
 
-    mysqlConnection.promise().query(querySql, [id], (error, results) => {
-      if (error) {
-        res.json({ error });
-      } else {
-        console.log("==> RESULTS");
-        console.log(results);
+    // Vérifier si l'utilisateur existe
+    const selectSql = "SELECT * FROM user WHERE id = ?";
+    const [rows] = await mysqlConnection.execute(selectSql, [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
 
-        // Controle autaurisation de la modification par l'userId
-        userIdParamsUrl = req.originalUrl.split("=")[1];
-        console.log("==> USERIDPARAMS <==");
-        console.log(userIdParamsUrl);
+    // Vérifier si l'utilisateur est autorisé à modifier les données
+    if (userIdParamsUrl !== rows[0].id) {
+      return res
+        .status(403)
+        .json({ message: "Pas autorisé à modifier les données" });
+    }
 
-        if (userIdParamsUrl == results[0].id) {
-          console.log("Authorization pour modif objet");
+    // Mettre à jour les données de l'utilisateur
+    const updateSql = "UPDATE user SET Nom = ?, nbrCouvert = ? WHERE id = ?";
+    await mysqlConnection.execute(updateSql, [Nom, nbrCouvert, id]);
 
-          // L'objet qui va ètre mis à jour dans la base de donnée
-          // console.log("==> CONTENU : REQ.BODY");
-          // console.log(req.body);
-
-          // console.log("==> CONENU : req.body.user");
-          // console.log(req.body.user);
-
-          const userFormObject = req.body;
-          console.log("******userFormObject******");
-          console.log(userFormObject);
-
-          // Mettre à jour la base de donnée
-
-          const { Nom, nbrCouvert } = userFormObject;
-
-          const updateSql = `
-            UPDATE user SET
-            Nom= ?,
-            nbrCouvert= ?
-            WHERE id = ?
-            `;
-
-          const values = [Nom, nbrCouvert, id];
-          console.log("********values*******");
-          console.log(values);
-
-          mysqlConnection.query(updateSql, values, (error, results) => {
-            if (error) {
-              res.status(500).json({ error });
-            } else {
-              res.status(200).json({
-                message: "Mise a jour ok dans la base de donnée",
-                results,
-              });
-            }
-          });
-        } else {
-          console.log(
-            "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements"
-          );
-          // throw "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements";
-          res.status(403).json({
-            message: "vous n'ètes pas autorisé à modifier les données",
-          });
-        }
-      }
-    });
+    res.status(200).json({ message: "Mise à jour réussie" });
   } catch (error) {
-    res.status(500).json({ error });
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };
 

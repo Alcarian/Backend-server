@@ -144,7 +144,7 @@ exports.readInfos = (req, res) => {
 
 exports.userUpdate = async (req, res) => {
   try {
-    const id = req.query.id;
+    const id = req.body.id;
     const querySql = "SELECT * FROM user WHERE id = ?";
 
     console.log(
@@ -158,7 +158,7 @@ exports.userUpdate = async (req, res) => {
     console.log(results);
 
     // Vérification de l'autorisation de modification par l'utilisateur
-    const userIdParamsUrl = req.query.userId;
+    const userIdParamsUrl = req.body.userId;
     console.log("==> USERIDPARAMS <==");
     console.log(userIdParamsUrl);
 

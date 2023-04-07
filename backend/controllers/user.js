@@ -180,7 +180,20 @@ exports.userUpdate = async (req, res) => {
         nbrCouvert = ?
         WHERE id = ?
       `;
-      const values = [userFormObject.Nom, userFormObject.nbrCouvert, id];
+
+      const values = [];
+      if (Nom !== "") {
+        values.push(Nom);
+      } else {
+        values.push(results[0].Nom);
+      }
+      if (nbrCouvert !== "") {
+        values.push(nbrCouvert);
+      } else {
+        values.push(results[0].nbrCouvert);
+      }
+      values.push(id);
+
       console.log("******** values *******");
       console.log(values);
 

@@ -144,30 +144,60 @@ exports.readInfos = (req, res) => {
 
 exports.userUpdate = async (req, res) => {
   try {
-    const { id, Nom, nbrCouvert } = req.body;
+    const id = req.query.id;
+    const querySql = "SELECT * FROM user WHERE id = ?";
 
-    // Vérifier si l'utilisateur existe
-    const selectSql = "SELECT * FROM user WHERE id = ?";
-    const [rows] = await mysqlConnection.execute(selectSql, [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    console.log(
+      "==> CONTENU : REQ.PARAMS ***********************************************"
+    );
+    console.log(req.body);
+
+    const [results] = await mysqlConnection.promise().query(querySql, [id]);
+
+    console.log("==> RESULTS");
+    console.log(results);
+
+    // Vérification de l'autorisation de modification par l'utilisateur
+    const userIdParamsUrl = req.query.userId;
+    console.log("==> USERIDPARAMS <==");
+    console.log(userIdParamsUrl);
+
+    if (userIdParamsUrl == results[0].id) {
+      console.log("Autorisation pour modifier l'objet");
+
+      // Objet qui va être mis à jour dans la base de données
+      const userFormObject = {
+        Nom: req.body.Nom,
+        nbrCouvert: req.body.nbrCouvert,
+      };
+      console.log("****** userFormObject ******");
+      console.log(userFormObject);
+
+      // Mise à jour de la base de données
+      const updateSql = `
+        UPDATE user SET
+        Nom = ?,
+        nbrCouvert = ?
+        WHERE id = ?
+      `;
+      const values = [userFormObject.Nom, userFormObject.nbrCouvert, id];
+      console.log("******** values *******");
+      console.log(values);
+
+      await mysqlConnection.promise().query(updateSql, values);
+      res.status(200).json({
+        message: "Mise à jour réussie dans la base de données",
+      });
+    } else {
+      console.log(
+        "L'ID utilisateur est différent de l'ID dans l'objet : pas autorisé à effectuer des changements"
+      );
+      res.status(403).json({
+        message: "Vous n'êtes pas autorisé à modifier ces données",
+      });
     }
-
-    // Vérifier si l'utilisateur est autorisé à modifier les données
-    if (userIdParamsUrl !== rows[0].id) {
-      return res
-        .status(403)
-        .json({ message: "Pas autorisé à modifier les données" });
-    }
-
-    // Mettre à jour les données de l'utilisateur
-    const updateSql = "UPDATE user SET Nom = ?, nbrCouvert = ? WHERE id = ?";
-    await mysqlConnection.execute(updateSql, [Nom, nbrCouvert, id]);
-
-    res.status(200).json({ message: "Mise à jour réussie" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ error });
   }
 };
 

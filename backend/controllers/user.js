@@ -167,7 +167,7 @@ exports.userUpdate = async (req, res) => {
 
       // Objet qui va être mis à jour dans la base de données
       const userFormObject = {
-        Nom: req.body.nom,
+        Nom: req.body.Nom,
         nbrCouvert: req.body.nbrCouvert,
       };
       console.log("****** userFormObject ******");

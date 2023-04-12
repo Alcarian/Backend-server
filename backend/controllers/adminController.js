@@ -12,7 +12,7 @@ exports.updateMenu = async (req, res) => {
     const day = req.body.jour_semaine;
     const querySql = "SELECT * FROM menu_semaine WHERE jour_semaine = ?";
 
-    await mysqlConnection.promise().query(querySql, [day], (error, results) => {
+    await mysqlConnection.query(querySql, [day], (error, results) => {
       if (error) {
         console.log(error);
         res.status(500).json({ error });
@@ -68,7 +68,6 @@ exports.updateMenu = async (req, res) => {
               console.log(error);
               res.status(500).json({ error });
             } else {
-              console.log(error);
               res.status(201).json({
                 message: "Mise a jour ok dans la base de donnée",
                 results,

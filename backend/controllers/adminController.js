@@ -4,7 +4,7 @@ const mysqlConnection = require("../config/db");
 // Import models base de données
 const updateModel = require("../models/updateModel");
 
-exports.updateMenu = (req, res) => {
+exports.updateMenu = async (req, res) => {
   console.log("==> ************ROUTE PUT************************");
   console.log(req.body);
 
@@ -12,7 +12,7 @@ exports.updateMenu = (req, res) => {
     const day = req.body.jour_semaine;
     const querySql = "SELECT * FROM menu_semaine WHERE jour_semaine";
 
-    mysqlConnection.promise().query(querySql, (error, results) => {
+    await mysqlConnection.promise().query(querySql, (error, results) => {
       if (error) {
         res.json({ error });
       } else {

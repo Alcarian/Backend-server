@@ -5,7 +5,7 @@ exports.readAllMenu = async (req, res) => {
   try {
     const querySql = "SELECT * FROM `menu_semaine`";
 
-    await mysqlConnection.query(querySql, (error, results) => {
+    await mysqlConnection.promise().query(querySql, (error, results) => {
       if (error) {
         res.json({ error });
       } else {

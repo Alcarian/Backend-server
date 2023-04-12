@@ -12,7 +12,7 @@ exports.updateMenu = (req, res) => {
     const day = req.body.jour_semaine;
     const querySql = "SELECT * FROM menu_semaine WHERE jour_semaine = ?";
 
-    mysqlConnection.promise().query(querySql, [day], (error, results) => {
+    mysqlConnection.query(querySql, [day], (error, results) => {
       if (error) {
         console.log(error);
         res.status(500).json({ error });

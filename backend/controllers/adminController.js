@@ -4,24 +4,6 @@ const mysqlConnection = require("../config/db");
 // Import models base de données
 const updateModel = require("../models/updateModel");
 
-exports.readAllMenu = async (req, res) => {
-  try {
-    connection.query(
-      "SELECT * FROM `menu_semaine` WHERE ?",
-      ["1"],
-      (error, results) => {
-        if (error) {
-          res.json({ error });
-        } else {
-          res.status(200).json({ results });
-        }
-      }
-    );
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
 exports.updateMenu = (req, res) => {
   console.log("==> ************ROUTE PUT************************");
   console.log(req.body);

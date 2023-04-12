@@ -10,11 +10,12 @@ exports.updateMenu = async (req, res) => {
 
   try {
     const day = req.body.jour_semaine;
-    const querySql = "SELECT * FROM menu_semaine WHERE jour_semaine";
+    const querySql = "SELECT * FROM menu_semaine WHERE jour_semaine = ?";
 
-    await mysqlConnection.promise().query(querySql, (error, results) => {
+    await mysqlConnection.promise().query(querySql, [day], (error, results) => {
       if (error) {
-        res.json({ error });
+        console.log(error);
+        res.status(500).json({ error });
       } else {
         console.log("==> RESULTS");
         console.log(results);
@@ -34,7 +35,7 @@ exports.updateMenu = async (req, res) => {
           descriptionDessert,
         } = updateMenuObject;
 
-        const querySql = `
+        const updateQuery = `
                 UPDATE menu_semaine SET
                 entree= ?,
                 plat= ?,
@@ -45,7 +46,7 @@ exports.updateMenu = async (req, res) => {
                 WHERE jour_semaine= ?
                 `;
         console.log("===> *****QUERY*****");
-        console.log(querySql);
+        console.log(updateQuery);
 
         const values = [
           entree,
@@ -60,16 +61,20 @@ exports.updateMenu = async (req, res) => {
         console.log("===> *****VALUE*****");
         console.log(values);
 
-        mysqlConnection.promise().query(querySql, values, (error, results) => {
-          if (error) {
-            res.status(500).json({ error });
-          } else {
-            res.status(201).json({
-              message: "Mise a jour ok dans la base de donnée",
-              results,
-            });
-          }
-        });
+        mysqlConnection
+          .promise()
+          .query(updateQuery, values, (error, results) => {
+            if (error) {
+              console.log(error);
+              res.status(500).json({ error });
+            } else {
+              console.log(error);
+              res.status(201).json({
+                message: "Mise a jour ok dans la base de donnée",
+                results,
+              });
+            }
+          });
       }
     });
   } catch (error) {

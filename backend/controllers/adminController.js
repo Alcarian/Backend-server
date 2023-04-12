@@ -4,6 +4,24 @@ const mysqlConnection = require("../config/db");
 // Import models base de données
 const updateModel = require("../models/updateModel");
 
+exports.readAllMenu = async (req, res) => {
+  try {
+    connection.query(
+      "SELECT * FROM `menu_semaine` WHERE ?",
+      ["1"],
+      (error, results) => {
+        if (error) {
+          res.json({ error });
+        } else {
+          res.status(200).json({ results });
+        }
+      }
+    );
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.updateMenu = (req, res) => {
   console.log("==> ************ROUTE PUT************************");
   console.log(req.body);
@@ -18,13 +36,6 @@ exports.updateMenu = (req, res) => {
       } else {
         console.log("==> RESULTS");
         console.log(results);
-
-        // Controle autorisation de la modification par l'userId
-        // userIdParamsUrl = req.originalUrl.split("=")[1];
-
-        // if (userIdParamsUrl == results) {
-        //   console.log("Authorization pour modif objet");
-        //   console.log(userIdParamsUrl);
 
         const updateMenuObject = req.body;
         console.log("==>> UPDATEMENUOBJECT");
@@ -77,15 +88,6 @@ exports.updateMenu = (req, res) => {
             });
           }
         });
-        // } else {
-        //   console.log(
-        //     "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements"
-        //   );
-        //   // throw "UserId différent de l'userId dans l'objet : pas autoriser à réaliser des changements";
-        //   res.status(403).json({
-        //     message: "vous n'ètes pas autorisé à modifier les données",
-        //   });
-        // }
       }
     });
   } catch (error) {

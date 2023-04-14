@@ -16,3 +16,17 @@ exports.readAllHours = async (req, res) => {
     res.status(500).json({ error });
   }
 };
+
+exports.updateHours = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const querySql = "SELECT * FROM user WHERE id = ?";
+
+    const [results] = await mysqlConnection.promise().query(querySql, [id]);
+
+    console.log("==> RESULTS");
+    console.log(results);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};

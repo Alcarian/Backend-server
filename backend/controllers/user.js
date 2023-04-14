@@ -147,10 +147,8 @@ exports.userUpdate = async (req, res) => {
     const id = req.body.id;
     const querySql = "SELECT * FROM user WHERE id = ?";
 
-    console.log(
-      "==> CONTENU : REQ.PARAMS ***********************************************"
-    );
-    console.log(req.body);
+    // console.log("==> CONTENU : REQ.PARAMS ********");
+    // console.log(req.body);
 
     const [results] = await mysqlConnection.promise().query(querySql, [id]);
 

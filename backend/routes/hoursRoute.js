@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.get("/", hoursControlleur.readAllHours);
 
-router.update("/updateHours", hoursControlleur.updateHours);
+router.put("/updateHours", hoursControlleur.updateHours);
 
 module.exports = router;

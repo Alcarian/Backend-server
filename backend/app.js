@@ -15,7 +15,7 @@ const app = express();
 // Utilisation des cors
 app.use(
   cors({
-    origin: process.env.API_URL,
+    origin: "https://backend-server-production.up.railway.app",
   })
 );
 

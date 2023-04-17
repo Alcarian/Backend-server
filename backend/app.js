@@ -15,7 +15,7 @@ const app = express();
 // Utilisation des cors
 app.use(
   cors({
-    origin: "https://backend-server-production.up.railway.app",
+    origin: "http://localhost:3000",
   })
 );
 

@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mysql = require("./config/db");
 const http = require("http");
+const cors = require("cors");
 const userRoutes = require("./routes/userRoute");
 const menuRoutes = require("./routes/menuRoute");
 const adminRoutes = require("./routes/adminRoutes");
@@ -10,6 +11,9 @@ const hoursRoutes = require("./routes/hoursRoute");
 
 // créer une application express
 const app = express();
+
+// Utilisation des cors
+app.use(cors());
 
 //importation de body-parser
 const bodyparser = require("body-parser");

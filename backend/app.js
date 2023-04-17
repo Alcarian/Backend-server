@@ -13,7 +13,11 @@ const hoursRoutes = require("./routes/hoursRoute");
 const app = express();
 
 // Utilisation des cors
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.API_URL,
+  })
+);
 
 //importation de body-parser
 const bodyparser = require("body-parser");

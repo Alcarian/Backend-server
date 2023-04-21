@@ -18,27 +18,27 @@ const bodyparser = require("body-parser");
 // log des req et res
 app.use(morgan("dev"));
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-    optionsSuccessStatus: 200,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     credentials: true,
+//     optionsSuccessStatus: 200,
+//   })
+// );
 
 // gérer les problèmes de CORS (Cross-Origin-Request-Sharing)
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-//   );
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
+});
 
 // transformer le body en format json utilisable
 app.use(bodyparser.json());

@@ -4,7 +4,7 @@ const mysqlConnection = require("../config/db");
 // Import models base de données
 const bookingModel = require("../models/BookingModels");
 
-exports.postBooking = async (req, res) => {
+exports.postBooking = (req, res) => {
   const bookingObject = req.body;
 
   const { NbrPersonnes, date, heures, nom, Num_téléphone, email } =
@@ -24,18 +24,16 @@ exports.postBooking = async (req, res) => {
   try {
     const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
     const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
-    await mysqlConnection
-      .promise()
-      .query(querySql, [values], (error, results) => {
-        if (error) {
-          res.json({ error });
-        } else {
-          res.status(200).json({
-            message: "Réservation effectuée!",
-            results,
-          });
-        }
-      });
+    mysqlConnection.promise().query(querySql, [values], (error, results) => {
+      if (error) {
+        res.json({ error });
+      } else {
+        res.status(200).json({
+          message: "Réservation effectuée!",
+          results,
+        });
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err });
   }

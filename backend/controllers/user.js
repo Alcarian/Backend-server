@@ -18,7 +18,7 @@ exports.signup = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
   // Instance de la class User
-  const user = new User(nbrCouvert, nom, email, password);
+  const user = new Users(nbrCouvert, nom, email, password);
 
   // chiffrer l'email avant envoi bdd
   const emailChiffre = user.emailChiffrement();

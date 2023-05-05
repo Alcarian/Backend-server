@@ -19,6 +19,7 @@ app.use(morgan("dev"));
 
 // gérer les problèmes de CORS (Cross-Origin-Request-Sharing)
 app.use((req, res, next) => {
+  const origin = req.headers.origin;
   res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader(
     "Access-Control-Allow-Headers",

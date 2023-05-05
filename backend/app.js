@@ -18,9 +18,30 @@ const bodyparser = require("body-parser");
 app.use(morgan("dev"));
 
 // gérer les problèmes de CORS (Cross-Origin-Request-Sharing)
+// app.use((req, res, next) => {
+//   const origin = req.headers.origin;
+//   res.setHeader("Access-Control-Allow-Origin", origin);
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Cache-Control"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
+
 app.use((req, res, next) => {
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://frontend-server-production.up.railway.app",
+  ];
   const origin = req.headers.origin;
-  res.setHeader("Access-Control-Allow-Origin", origin);
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Cache-Control"

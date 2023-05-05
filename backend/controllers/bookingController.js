@@ -5,16 +5,6 @@ const mysqlConnection = require("../config/db");
 const bookingModel = require("../models/BookingModels");
 
 exports.postBooking = (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-
   const bookingObject = req.body;
 
   const { NbrPersonnes, date, heures, nom, Num_téléphone, email } =
@@ -33,7 +23,9 @@ exports.postBooking = (req, res) => {
   // Enregistrer l'objet dans la bdd
   try {
     const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
+
     const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
+
     mysqlConnection.promise().query(querySql, [values], (error, results) => {
       if (error) {
         res.json({ error });

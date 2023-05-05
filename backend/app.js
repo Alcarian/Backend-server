@@ -33,26 +33,43 @@ app.use(morgan("dev"));
 //   next();
 // });
 
-app.use((req, res, next) => {
-  const allowedOrigins = [
-    "http://localhost:3000",
-    "https://frontend-server-production.up.railway.app",
-  ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
+// app.use((req, res, next) => {
+//   const allowedOrigins = [
+//     "http://localhost:3000",
+//     "https://frontend-server-production.up.railway.app",
+//   ];
+//   const origin = req.headers.origin;
+//   if (allowedOrigins.includes(origin)) {
+//     res.setHeader("Access-Control-Allow-Origin", origin);
+//   }
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Cache-Control"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
+
+// Middleware qui ajoute des en-têtes CORS
+const addCorsHeaders = (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Cache-Control"
+    "Origin, X-Requested-With, Content, Accept"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
-});
+};
+
+// Ajouter le middleware à l'application
+app.use(addCorsHeaders);
 
 // transformer le body en format json utilisable
 app.use(bodyparser.json());

@@ -6,7 +6,7 @@ const cryptojs = require("crypto-js");
 
 // import pour l'utilisation des variables d'environement
 const dotenv = require("dotenv");
-const result = dotenv.config();
+dotenv.config();
 
 class User {
   constructor(nbrCouvert, Nom, email, password) {

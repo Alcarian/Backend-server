@@ -18,14 +18,6 @@ const bodyparser = require("body-parser");
 // log des req et res
 app.use(morgan("dev"));
 
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     credentials: true,
-//     optionsSuccessStatus: 200,
-//   })
-// );
-
 // gérer les problèmes de CORS (Cross-Origin-Request-Sharing)
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

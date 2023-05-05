@@ -54,9 +54,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Ajouter le middleware à l'application
-app.use(addCorsHeaders);
-
 // transformer le body en format json utilisable
 app.use(bodyparser.json());
 

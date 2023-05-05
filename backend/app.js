@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 const mysql = require("./config/db");
 const http = require("http");
-const cors = require("cors");
 const userRoutes = require("./routes/userRoute");
 const menuRoutes = require("./routes/menuRoute");
 const adminRoutes = require("./routes/adminRoutes");
@@ -20,7 +19,7 @@ app.use(morgan("dev"));
 
 // gérer les problèmes de CORS (Cross-Origin-Request-Sharing)
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"

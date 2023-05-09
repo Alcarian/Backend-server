@@ -43,13 +43,12 @@ exports.postBooking = (req, res) => {
 exports.readBooking = (req, res) => {
   const querySql = "SELECT * FROM `user` = ?";
 
-  console.log("********querySql******");
-  console.log(querySql);
-
   mysqlConnection
     .promise()
     .query(querySql)
     .then((results) => {
+      console.log("*****results******");
+      console.log(results);
       res.status(200).json({
         message: " Requête GET ok !",
         results,

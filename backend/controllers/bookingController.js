@@ -21,22 +21,39 @@ exports.postBooking = (req, res) => {
   );
 
   // Enregistrer l'objet dans la bdd
-  try {
-    const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
+  // try {
+  //   const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
 
-    const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
+  //   const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
 
-    mysqlConnection.promise().query(querySql, [values], (error, results) => {
-      if (error) {
-        res.json({ error });
-      } else {
-        res.status(200).json({
-          message: "Réservation effectuée!",
-          results,
-        });
-      }
+  //   mysqlConnection.promise().query(querySql, [values], (error, results) => {
+  //     if (error) {
+  //       res.json({ error });
+  //     } else {
+  //       res.status(200).json({
+  //         message: "Réservation effectuée!",
+  //         results,
+  //       });
+  //     }
+  //   });
+  // } catch (err) {
+  //   res.status(500).json({ error: err });
+  // }
+
+  const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
+
+  const values = [NbrPersonnes, date, heures, nom, Num_téléphone, email];
+
+  mysqlConnection
+    .promise()
+    .query(querySql, [values])
+    .then((results) => {
+      res.status(200).json({
+        message: "Réservation effectuée!",
+        results,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
     });
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
 };

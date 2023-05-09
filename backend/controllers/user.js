@@ -313,7 +313,7 @@ exports.deleteUser = (req, res) => {
       console.log("******userIdParamsUrl*******");
       console.log(userIdParamsUrl);
 
-      if (userIdParamsUrl == results[0].id) {
+      if (userIdParamsUrl == results[0][0].id) {
         console.log("Authorization pour SUPPRESSION de l'objet");
 
         // Ma requète PHPmyadmin pour supprimer la data

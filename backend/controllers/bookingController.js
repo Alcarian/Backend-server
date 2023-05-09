@@ -41,9 +41,10 @@ exports.postBooking = (req, res) => {
 };
 
 exports.readBooking = (req, res) => {
-  const querySql = "SELECT * FROM `booking` = ?";
+  const querySql = "SELECT * FROM `booking`";
 
   mysqlConnection
+    .promise()
     .query(querySql)
     .then((results) => {
       console.log("*****results******");

@@ -214,73 +214,137 @@ exports.userUpdate = async (req, res) => {
   }
 };
 
-exports.deleteUser = (req, res) => {
-  try {
-    // Aller chercher l'id de l'objet a supprimer dans la requête
-    const id = req.originalUrl.split("=")[1];
-    console.log("******ID**********");
-    console.log(id);
+// exports.deleteUser = (req, res) => {
+try {
+  // Aller chercher l'id de l'objet a supprimer dans la requête
+  const id = req.originalUrl.split("=")[1];
+  console.log("******ID**********");
+  console.log(id);
 
-    const querySql = "SELECT * FROM `user` WHERE `id` = ?";
+  const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
-    mysqlConnection.query(querySql, [id], (error, results) => {
-      if (error) {
-        res.json({ error });
+  mysqlConnection.query(querySql, [id], (error, results) => {
+    if (error) {
+      res.json({ error });
+    } else {
+      console.log("==> RESULTS");
+      console.log(results);
+
+      // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
+      if (results != 0) {
+        console.log("Présence de l'objet dans la base de donnée");
       } else {
-        console.log("==> RESULTS");
-        console.log(results);
+        console.log("Objet non présent dans la base de donnée");
+        return res.status(404).json({
+          message: "pas d'objet a supprimer dans la base de donnée",
+        });
+      }
 
-        // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
-        if (results != 0) {
-          console.log("Présence de l'objet dans la base de donnée");
-        } else {
-          console.log("Objet non présent dans la base de donnée");
-          return res.status(404).json({
-            message: "pas d'objet a supprimer dans la base de donnée",
-          });
-        }
+      // Controle autaurisation de la modification par l'userId
+      userIdParamsUrl = req.originalUrl.split("=")[1];
+      console.log("******userIdParamsUrl*******");
+      console.log(userIdParamsUrl);
 
-        // Controle autaurisation de la modification par l'userId
-        userIdParamsUrl = req.originalUrl.split("=")[1];
-        console.log("******userIdParamsUrl*******");
-        console.log(userIdParamsUrl);
+      if (userIdParamsUrl == results[0].id) {
+        console.log("Authorization pour SUPPRESSION de l'objet");
 
-        if (userIdParamsUrl == results[0].id) {
-          console.log("Authorization pour SUPPRESSION de l'objet");
+        // Mettre à jour la base de donnée
+        // Ma requète PHPmyadmin pour supprimer la data
 
-          // Mettre à jour la base de donnée
-          // Ma requète PHPmyadmin pour supprimer la data
-
-          const querySql = `
+        const querySql = `
             DELETE FROM user
             WHERE id= ?
             `;
 
-          const values = [id];
+        const values = [id];
 
-          // La connexion a la base de donnée
-          mysqlConnection
-            .promise()
-            .query(querySql, values, (error, results) => {
-              if (error) {
-                res.status(500).json({ error });
-              } else {
-                res.status(201).json({
-                  message: "Objet effacé dans la base de donnée",
-                  results,
-                });
-              }
+        // La connexion a la base de donnée
+        mysqlConnection.promise().query(querySql, values, (error, results) => {
+          if (error) {
+            res.status(500).json({ error });
+          } else {
+            res.status(201).json({
+              message: "Objet effacé dans la base de donnée",
+              results,
             });
-        } else {
-          console.log("Pas autorisé");
-          res.status(403).json({
-            message: "Vous n'êtes pas autorisé a supprimer les données",
-          });
-        }
+          }
+        });
+      } else {
+        console.log("Pas autorisé");
+        res.status(403).json({
+          message: "Vous n'êtes pas autorisé a supprimer les données",
+        });
       }
+    }
+  });
+  //
+} catch (error) {
+  res.status(500).json({ error: error, message: "ERREUR !" });
+}
+// };
+
+exports.deleteUser = (req, res) => {
+  // Aller chercher l'id de l'objet a supprimer dans la requête
+  const id = req.originalUrl.split("=")[1];
+  console.log("******ID**********");
+  console.log(id);
+
+  const querySql = "SELECT * FROM `user` WHERE `id` = ?";
+
+  mysqlConnection
+    .promise()
+    .query(querySql, [id])
+    .then((results) => {
+      console.log("==> RESULTS");
+      console.log(results);
+
+      // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
+      if (results[0]) {
+        console.log("Présence de l'objet dans la base de donnée");
+      } else {
+        console.log("Objet non présent dans la base de donnée");
+        return res.status(404).json({
+          message: "pas d'objet a supprimer dans la base de donnée",
+        });
+      }
+
+      // Controle autaurisation de la modification par l'userId
+      userIdParamsUrl = req.originalUrl.split("=")[1];
+      console.log("******userIdParamsUrl*******");
+      console.log(userIdParamsUrl);
+
+      if (userIdParamsUrl == results[0].id) {
+        console.log("Authorization pour SUPPRESSION de l'objet");
+
+        // Ma requète PHPmyadmin pour supprimer la data
+        const querySql = `
+            DELETE FROM user
+            WHERE id= ?
+            `;
+
+        const values = [id];
+
+        // La connexion a la base de donnée
+        mysqlConnection
+          .promise()
+          .query(querySql, values)
+          .then((results) => {
+            res.status(201).json({
+              message: "Objet effacé dans la base de donnée",
+              results,
+            });
+          })
+          .catch((error) => {
+            res.status(500).json({ error });
+          });
+      } else {
+        console.log("Pas autorisé");
+        res.status(403).json({
+          message: "Vous n'êtes pas autorisé a supprimer les données",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error, message: "ERREUR !" });
     });
-    //
-  } catch (error) {
-    res.status(500).json({ error: error, message: "ERREUR !" });
-  }
 };

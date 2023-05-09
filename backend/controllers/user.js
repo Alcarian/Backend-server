@@ -292,6 +292,7 @@ exports.deleteUser = (req, res) => {
   const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
   mysqlConnection
+    .promise()
     .query(querySql, [id])
     .then((results) => {
       console.log("==> RESULTS");

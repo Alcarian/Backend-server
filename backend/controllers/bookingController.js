@@ -39,3 +39,20 @@ exports.postBooking = (req, res) => {
       res.status(500).json({ error: error });
     });
 };
+
+exports.readBooking = (req, res) => {
+  const querySql = "SELECT * FROM `user` = ?";
+
+  mysqlConnection
+    .promise()
+    .query(querySql)
+    .then((results) => {
+      res.status(200).json({
+        message: " Requête GET ok !",
+        results,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
+    });
+};

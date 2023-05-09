@@ -44,7 +44,6 @@ exports.readBooking = (req, res) => {
   const querySql = "SELECT * FROM `booking` = ?";
 
   mysqlConnection
-    .promise()
     .query(querySql)
     .then((results) => {
       console.log("*****results******");

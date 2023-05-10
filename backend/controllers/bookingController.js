@@ -60,13 +60,11 @@ exports.readBooking = (req, res) => {
 };
 
 exports.deleteBooking = (req, res) => {
-  const id = req.params.id;
-
   mysqlConnection
-    .execute("DELETE FROM booking WHERE id = ?", [id])
+    .execute("DELETE FROM booking WHERE id = ?")
     .then(([rows]) => {
       mysqlConnection.end();
-      res.status(200).send(`La réservation avec l'id ${id} a été supprimée`);
+      res.status(200).send(`La réservation a été supprimée`);
     })
     .catch((err) => {
       console.log(err);

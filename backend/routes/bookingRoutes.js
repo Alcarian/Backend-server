@@ -9,4 +9,6 @@ router.post("/", bookingController.postBooking);
 
 router.get("/getbooking", bookingController.readBooking);
 
+router.delete("/deleteBooking", bookingController.deleteBooking);
+
 module.exports = router;

@@ -40,10 +40,10 @@ exports.postBooking = (req, res) => {
     });
 };
 
-exports.readBooking = (req, res) => {
+exports.readBooking = async (req, res) => {
   const querySql = "SELECT * FROM `booking`";
 
-  mysqlConnection
+  await mysqlConnection
     .promise()
     .query(querySql)
     .then((results) => {

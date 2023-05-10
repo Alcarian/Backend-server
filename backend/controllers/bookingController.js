@@ -63,7 +63,8 @@ exports.deleteBooking = (req, res) => {
   const querySql = "DELETE FROM `booking` WHERE `id`";
 
   mysqlConnection
-    .execute()
+    .promise()
+    .query(querySql)
     .then(() => {
       mysqlConnection.end();
       res.status(200).send(`La réservation a été supprimée`);

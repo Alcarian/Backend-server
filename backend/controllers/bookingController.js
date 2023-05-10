@@ -62,7 +62,7 @@ exports.readBooking = (req, res) => {
 exports.deleteBooking = (req, res) => {
   const id = req.params.id;
 
-  connection
+  mysqlConnection
     .execute("DELETE FROM booking WHERE id = ?", [id])
     .then(([rows]) => {
       mysqlConnection.end();

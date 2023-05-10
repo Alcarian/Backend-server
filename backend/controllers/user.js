@@ -11,14 +11,14 @@ const result = dotenv.config();
 const mysqlConnection = require("../config/db");
 
 //import models base de données
-const Users = require("../models/userModel");
+const User = require("../models/userModel");
 
 // signup pour enregistrer le nouvel utilisateur dans la bdd
 exports.signup = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
   // Instance de la class User
-  const user = new Users(nbrCouvert, nom, email, password);
+  const user = new User(nbrCouvert, nom, email, password);
 
   // chiffrer l'email avant envoi bdd
   const emailChiffre = user.emailChiffrement();
@@ -63,7 +63,7 @@ exports.login = (req, res) => {
   // console.log(req.body);
 
   //instance de la classe User
-  const user = new Users(nbrCouvert, nom, email, password);
+  const user = new User(nbrCouvert, nom, email, password);
   // console.log("*******user********");
   // console.log(user);
 

@@ -59,19 +59,18 @@ exports.readBooking = (req, res) => {
     });
 };
 
-exports.deleteBooking = async (req, res) => {
+exports.deleteBooking = (req, res) => {
   const id = req.params.id;
 
-  try {
-    const [rows] = await connection.execute(
-      "DELETE FROM booking WHERE id = ?",
-      [id]
-    );
-    mysqlConnection.end();
-    res.status(200).send(`La réservation avec l'id ${id} a été supprimée`);
-  } catch (err) {
-    console.log(err);
-    mysqlConnection.end();
-    res.status(500).send("Erreur lors de la suppression de la réservation");
-  }
+  connection
+    .execute("DELETE FROM booking WHERE id = ?", [id])
+    .then(([rows]) => {
+      mysqlConnection.end();
+      res.status(200).send(`La réservation avec l'id ${id} a été supprimée`);
+    })
+    .catch((err) => {
+      console.log(err);
+      mysqlConnection.end();
+      res.status(500).send("Erreur lors de la suppression de la réservation");
+    });
 };

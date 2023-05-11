@@ -66,16 +66,37 @@ exports.deleteBooking = (req, res) => {
   const id = req.originalUrl.split("=")[1];
   console.log("******ID**********");
   console.log(id);
-  console.log("********REQ********");
-  console.log(req);
-  const querySql = `DELETE FROM booking WHERE id= ?`;
+
+  const querySql = "SELECT * FROM `booking` WHERE `id` = ?";
 
   mysqlConnection
     .promise()
-    .query(querySql)
-    .then(() => {
-      mysqlConnection.end();
-      res.status(200).send(`La réservation a été supprimée`);
+    .query(querySql, [id])
+    .then((results) => {
+      console.log("==> RESULTS");
+      console.log(results);
+
+      // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
+      if (results[0]) {
+        console.log("Présence de l'objet dans la base de donnée");
+      } else {
+        console.log("Objet non présent dans la base de donnée");
+        return res.status(404).json({
+          message: "pas d'objet a supprimer dans la base de donnée",
+        });
+      }
+
+      const querySql2 = `DELETE FROM booking WHERE id= ?`;
+
+      const values = [id];
+
+      mysqlConnection
+        .promise()
+        .query(querySql2, values)
+        .then(() => {
+          mysqlConnection.end();
+          res.status(200).send(`La réservation a été supprimée`);
+        });
     })
     .catch((err) => {
       console.log(err);

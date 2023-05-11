@@ -66,6 +66,8 @@ exports.deleteBooking = (req, res) => {
   const id = req.originalUrl.split("=")[1];
   console.log("******ID**********");
   console.log(id);
+  console.log("********REQ********");
+  console.log(req);
   const querySql = `DELETE FROM booking WHERE id= ?`;
 
   mysqlConnection

@@ -60,7 +60,9 @@ exports.readBooking = (req, res) => {
 };
 
 exports.deleteBooking = (req, res) => {
-  const querySql = "DELETE FROM `booking` WHERE `id`";
+  console.log("*******req************");
+  console.log(req);
+  const querySql = "DELETE FROM `booking` WHERE `id` = ?";
 
   mysqlConnection
     .promise()

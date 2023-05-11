@@ -47,8 +47,8 @@ exports.readBooking = (req, res) => {
     .promise()
     .query(querySql)
     .then((results) => {
-      console.log("*****results******");
-      console.log(results);
+      // console.log("*****results******");
+      // console.log(results);
       res.status(200).json({
         message: " Requête GET ok !",
         results,

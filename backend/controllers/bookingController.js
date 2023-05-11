@@ -60,8 +60,12 @@ exports.readBooking = (req, res) => {
 };
 
 exports.deleteBooking = (req, res) => {
-  console.log("*******req************");
-  console.log(req);
+  // console.log("*******req************");
+  // console.log(req);
+
+  const id = req.originalUrl.split("=")[1];
+  console.log("******ID**********");
+  console.log(id);
   const querySql = "DELETE FROM `booking` WHERE `id` = ?";
 
   mysqlConnection

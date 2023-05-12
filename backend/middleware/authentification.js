@@ -9,25 +9,17 @@ module.exports = (req, res, next) => {
 
     // récupérer le token dans le header authorization avec bearer token
     const token = req.headers.authorization.split(" ")[1];
-    // console.log("==> TOKEN");
-    // console.log(token);
 
     // décoder le token
     const decodedToken = jwt.verify(token, `${process.env.JWT_KEY_TOKEN}`);
-    // console.log("==> CONTENU : decodedToken");
-    // console.log(decodedToken);
 
     // récupérer le userId du token déchiffré
     const userIdDecodedToken = decodedToken.userId;
-    // console.log("==>CONTENU : userId du decoded TOKEN");
-    // console.log(userIdDecodedToken);
 
     // console.log("==> UserId REQ body request");
     // console.log(req.body.form_user.userId);
 
     userIdParamsUrl = req.originalUrl.split("=")[1];
-    // console.log("==> USERIDPARAMSURL <==");
-    // console.log(userIdParamsUrl);
 
     // Comparer les userId
     if (userIdParamsUrl == userIdDecodedToken) {

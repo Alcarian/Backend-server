@@ -13,7 +13,6 @@ const mysqlConnection = require("../config/db");
 //import models base de données
 const User = require("../models/userModel");
 
-// signup pour enregistrer le nouvel utilisateur dans la bdd
 exports.signup = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
@@ -54,23 +53,16 @@ exports.signup = (req, res) => {
     .catch((error) => res.status(500).json({ error }.json(console.log(error))));
 };
 
-// Login pour s'authentifier
 exports.login = (req, res) => {
   const { nbrCouvert, nom, email, password } = req.body;
 
   // Le contenu de la requète
-  // console.log("*****REQ.BODY*********");
-  // console.log(req.body);
 
   //instance de la classe User
   const user = new User(nbrCouvert, nom, email, password);
-  // console.log("*******user********");
-  // console.log(user);
 
   //chiffrer l'email de la requète
   const emailChiffre = user.emailChiffrement();
-  console.log("*********emailChiffre*********");
-  console.log(emailChiffre);
 
   // Chercher dans la bdd si l'email utilisateur est bien présent
   mysqlConnection.query(
@@ -122,12 +114,10 @@ exports.login = (req, res) => {
   );
 };
 
-// Lire les infos user
 exports.readInfos = (req, res) => {
   try {
     const id = req.originalUrl.split("=")[1];
-    console.log("==> CONST ID");
-    console.log(id);
+
     const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
     mysqlConnection.query(querySql, [id], (error, results) => {
@@ -147,18 +137,10 @@ exports.userUpdate = async (req, res) => {
     const id = req.body.id;
     const querySql = "SELECT * FROM user WHERE id = ?";
 
-    // console.log("==> CONTENU : REQ.PARAMS ********");
-    // console.log(req.body);
-
     const [results] = await mysqlConnection.promise().query(querySql, [id]);
-
-    console.log("==> RESULTS");
-    console.log(results);
 
     // Vérification de l'autorisation de modification par l'utilisateur
     const userIdParamsUrl = req.query.id;
-    console.log("==> USERIDPARAMS <==");
-    console.log(userIdParamsUrl);
 
     if (userIdParamsUrl == results[0].id) {
       console.log("Autorisation pour modifier l'objet");
@@ -168,8 +150,6 @@ exports.userUpdate = async (req, res) => {
         Nom: req.body.Nom,
         nbrCouvert: req.body.nbrCouvert,
       };
-      console.log("****** userFormObject ******");
-      console.log(userFormObject);
 
       // Mise à jour de la base de données
       const { Nom, nbrCouvert } = userFormObject;
@@ -194,9 +174,6 @@ exports.userUpdate = async (req, res) => {
       }
       values.push(id);
 
-      console.log("******** values *******");
-      console.log(values);
-
       await mysqlConnection.promise().query(updateSql, values);
       res.status(200).json({
         message: "Mise à jour réussie dans la base de données",
@@ -217,8 +194,6 @@ exports.userUpdate = async (req, res) => {
 exports.deleteUser = (req, res) => {
   // Aller chercher l'id de l'objet a supprimer dans la requête
   const id = req.originalUrl.split("=")[1];
-  console.log("******ID**********");
-  console.log(id);
 
   const querySql = "SELECT * FROM `user` WHERE `id` = ?";
 
@@ -226,9 +201,6 @@ exports.deleteUser = (req, res) => {
     .promise()
     .query(querySql, [id])
     .then((results) => {
-      console.log("==> RESULTS");
-      console.log(results);
-
       // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
       if (results[0]) {
         console.log("Présence de l'objet dans la base de donnée");
@@ -241,8 +213,6 @@ exports.deleteUser = (req, res) => {
 
       // Controle autaurisation de la modification par l'userId
       userIdParamsUrl = req.originalUrl.split("=")[1];
-      console.log("******userIdParamsUrl*******");
-      console.log(userIdParamsUrl);
 
       if (userIdParamsUrl == results[0][0].id) {
         console.log("Authorization pour SUPPRESSION de l'objet");

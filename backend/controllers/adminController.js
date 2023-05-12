@@ -5,9 +5,6 @@ const mysqlConnection = require("../config/db");
 const updateModel = require("../models/updateModel");
 
 exports.updateMenu = (req, res) => {
-  console.log("==> ************ROUTE PUT************************");
-  console.log(req.body);
-
   try {
     const day = req.body.jour_semaine;
     const querySql = "SELECT * FROM menu_semaine WHERE jour_semaine = ?";
@@ -21,8 +18,6 @@ exports.updateMenu = (req, res) => {
         console.log(results);
 
         const updateMenuObject = req.body;
-        console.log("==>> UPDATEMENUOBJECT");
-        console.log(updateMenuObject);
 
         // Mettre à jour la base de donnée
 
@@ -55,9 +50,6 @@ exports.updateMenu = (req, res) => {
           descriptionDessert,
           day,
         ];
-
-        console.log("===> *****VALUE*****");
-        console.log(values);
 
         mysqlConnection
           .promise()

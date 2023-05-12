@@ -47,8 +47,6 @@ exports.readBooking = (req, res) => {
     .promise()
     .query(querySql)
     .then((results) => {
-      // console.log("*****results******");
-      // console.log(results);
       res.status(200).json({
         message: " Requête GET ok !",
         results,
@@ -60,12 +58,7 @@ exports.readBooking = (req, res) => {
 };
 
 exports.deleteBooking = (req, res) => {
-  // console.log("*******req************");
-  // console.log(req);
-
   const id = req.originalUrl.split("=")[1];
-  console.log("******ID**********");
-  console.log(id);
 
   const querySql = "SELECT * FROM `booking` WHERE `id` = ?";
 
@@ -73,9 +66,6 @@ exports.deleteBooking = (req, res) => {
     .promise()
     .query(querySql, [id])
     .then((results) => {
-      console.log("==> RESULTS");
-      console.log(results);
-
       // controle de l'existance de la donnée dans la bdd pour éviter le crash du serveur
       if (results[0]) {
         console.log("Présence de l'objet dans la base de donnée");

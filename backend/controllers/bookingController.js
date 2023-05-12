@@ -94,6 +94,6 @@ exports.deleteBooking = (req, res) => {
       console.log(err);
       res
         .status(500)
-        .json({ message: "Erreur lors de la suppression de la réservation" });
+        .json({ error: "Erreur lors de la suppression de la réservation" });
     });
 };

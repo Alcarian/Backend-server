@@ -87,11 +87,13 @@ exports.deleteBooking = (req, res) => {
         .promise()
         .query(querySql2, values)
         .then(() => {
-          res.status(200).json(send("La réservation a été supprimée"));
+          res.status(200).json({ message: "La réservation a été supprimée" });
         });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send("Erreur lors de la suppression de la réservation");
+      res
+        .status(500)
+        .json({ message: "Erreur lors de la suppression de la réservation" });
     });
 };

@@ -36,7 +36,7 @@ app.use(morgan("dev"));
 app.use((req, res, next) => {
   const allowedOrigins = [
     "http://localhost:3000",
-    "https://frontend-server-production.up.railway.app",
+    "https://Backend-server-production.up.railway.app",
   ];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {

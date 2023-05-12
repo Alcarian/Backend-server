@@ -85,12 +85,11 @@ exports.deleteBooking = (req, res) => {
         .query(querySql2, values)
         .then(() => {
           mysqlConnection.end();
-          res.status(200).send(`La réservation a été supprimée`);
+          res.status(200).send("La réservation a été supprimée");
         });
     })
     .catch((err) => {
       console.log(err);
-      mysqlConnection.end();
       res.status(500).send("Erreur lors de la suppression de la réservation");
     });
 };

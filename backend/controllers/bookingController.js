@@ -87,7 +87,6 @@ exports.deleteBooking = (req, res) => {
         .promise()
         .query(querySql2, values)
         .then(() => {
-          mysqlConnection.end();
           res.status(200).send("La réservation a été supprimée");
         });
     })

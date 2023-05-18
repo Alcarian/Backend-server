@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
-const mysql = require("./config/db");
-const http = require("http");
+// const mysql = require("./config/db");
+// const http = require("http");
 const userRoutes = require("./routes/userRoute");
 const menuRoutes = require("./routes/menuRoute");
 const adminRoutes = require("./routes/adminRoutes");

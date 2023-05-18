@@ -7,4 +7,4 @@ CREATE TABLE `quai_antique`.`booking` (
   `Num_téléphone` VARCHAR(20) NOT NULL,
   `email` VARCHAR(75) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+)

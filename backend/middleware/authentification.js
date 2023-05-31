@@ -4,9 +4,6 @@ const dotenv = require("dotenv");
 // Exportation de la function du middleware
 module.exports = (req, res, next) => {
   try {
-    // console.log("==> ***********MIIDLEWARE AUTH***************************");
-    // console.log(req.headers.authorization);
-
     // récupérer le token dans le header authorization avec bearer token
     const token = req.headers.authorization.split(" ")[1];
 
@@ -15,9 +12,6 @@ module.exports = (req, res, next) => {
 
     // récupérer le userId du token déchiffré
     const userIdDecodedToken = decodedToken.userId;
-
-    // console.log("==> UserId REQ body request");
-    // console.log(req.body.form_user.userId);
 
     userIdParamsUrl = req.originalUrl.split("=")[1];
 

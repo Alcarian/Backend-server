@@ -1,7 +1,7 @@
 //import mysqlConnection
 const mysqlConnection = require("../config/db");
 
-exports.readAllHours = async (req, res) => {
+exports.readAllHours = (req, res) => {
   try {
     const querySql = "SELECT * FROM `hours`";
 

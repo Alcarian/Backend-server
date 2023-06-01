@@ -18,7 +18,7 @@ app.use(morgan("dev"));
 
 app.use(
   cors({
-    origin: "alcarian-quai-antique.netlify.app",
+    origin: "https://alcarian-quai-antique.netlify.app",
     credentials: true,
   })
 );

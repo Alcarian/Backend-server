@@ -18,7 +18,7 @@ app.use(morgan("dev"));
 
 app.use(
   cors({
-    origin: "https://alcarian-quai-antique.netlify.app/",
+    origin: "https://alcarian-quai-antique.netlify.app",
     credentials: true,
   })
 );
@@ -27,7 +27,7 @@ app.use(
 //   const allowedOrigins = [
 //     "http://localhost:3000",
 //     "https://backend-server-production.up.railway.app",
-//     "https://alcarian-quai-antique.netlify.app/",
+//     "https://alcarian-quai-antique.netlify.app",
 //   ];
 //   const origin = req.headers.origin;
 //   if (allowedOrigins.includes(origin)) {

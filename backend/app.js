@@ -23,6 +23,7 @@ app.use(
   })
 );
 
+//test
 // app.use((req, res, next) => {
 //   const allowedOrigins = [
 //     "http://localhost:3000",

@@ -16,34 +16,34 @@ const bodyparser = require("body-parser");
 // log des req et res
 app.use(morgan("dev"));
 
-// app.use(
-//   cors({
-//     origin: "https://alcarian-quai-antique.netlify.app/",
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "https://alcarian-quai-antique.netlify.app/",
+    credentials: true,
+  })
+);
 
-app.use((req, res, next) => {
-  const allowedOrigins = [
-    "http://localhost:3000",
-    "https://backend-server-production.up.railway.app",
-    "https://alcarian-quai-antique.netlify.app/",
-  ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Cache-Control"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
+// app.use((req, res, next) => {
+//   const allowedOrigins = [
+//     "http://localhost:3000",
+//     "https://backend-server-production.up.railway.app",
+//     "https://alcarian-quai-antique.netlify.app/",
+//   ];
+//   const origin = req.headers.origin;
+//   if (allowedOrigins.includes(origin)) {
+//     res.setHeader("Access-Control-Allow-Origin", origin);
+//   }
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Cache-Control"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
 
 // transformer le body en format json utilisable
 app.use(bodyparser.json());

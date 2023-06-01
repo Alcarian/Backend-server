@@ -20,7 +20,7 @@ exports.postBooking = (req, res) => {
     email
   );
 
-  // Enregistrer l'objet dans la bdd
+  //Enregistrer l'objet dans la bdd
 
   const querySql = `INSERT INTO booking(NbrPersonnes, date, heures, nom, Num_téléphone, email) VALUE (?) `;
 

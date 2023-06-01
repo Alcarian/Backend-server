@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   const allowedOrigins = [
     "http://localhost:3000",
     "https://backend-server-production.up.railway.app",
+    "https://alcarian-quai-antique.netlify.app/",
   ];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {

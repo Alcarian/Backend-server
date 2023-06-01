@@ -5,7 +5,7 @@ exports.readAllHours = async (req, res) => {
   try {
     const querySql = "SELECT * FROM `hours`";
 
-    mysqlConnection.query(querySql, (error, results) => {
+    mysqlConnection.promise().query(querySql, (error, results) => {
       if (error) {
         res.json({ error });
       } else {

@@ -1,11 +1,11 @@
 //import mysqlConnection
 const mysqlConnection = require("../config/db");
 
-exports.readAllHours = (req, res) => {
+exports.readAllHours = async (req, res) => {
   try {
     const querySql = "SELECT * FROM `hours`";
 
-    mysqlConnection.query(querySql, (error, results) => {
+    await mysqlConnection.query(querySql, (error, results) => {
       if (error) {
         res.json({ error });
       } else {

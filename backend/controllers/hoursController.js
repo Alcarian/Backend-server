@@ -15,22 +15,6 @@ exports.readAllHours = async (req, res) => {
   }
 };
 
-// exports.readAllHours = async (req, res) => {
-//   try {
-//     const querySql = "SELECT * FROM `hours`";
-
-//     mysqlConnection.promise().query(querySql, (error, results) => {
-//       if (error) {
-//         res.json({ error });
-//       } else {
-//         res.status(200).json({ results });
-//       }
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// };
-
 exports.updateHours = async (req, res) => {
   try {
     const id = req.params.id;

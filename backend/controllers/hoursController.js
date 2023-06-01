@@ -1,21 +1,35 @@
 //import mysqlConnection
 const mysqlConnection = require("../config/db");
 
+const util = require("util");
+
+const query = util.promisify(mysqlConnection.query).bind(mysqlConnection);
+
 exports.readAllHours = async (req, res) => {
   try {
     const querySql = "SELECT * FROM `hours`";
-
-    mysqlConnection.promise().query(querySql, (error, results) => {
-      if (error) {
-        res.json({ error });
-      } else {
-        res.status(200).json({ results });
-      }
-    });
+    const results = await query(querySql);
+    res.status(200).json({ results });
   } catch (error) {
     res.status(500).json({ error });
   }
 };
+
+// exports.readAllHours = async (req, res) => {
+//   try {
+//     const querySql = "SELECT * FROM `hours`";
+
+//     mysqlConnection.promise().query(querySql, (error, results) => {
+//       if (error) {
+//         res.json({ error });
+//       } else {
+//         res.status(200).json({ results });
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).json({ error });
+//   }
+// };
 
 exports.updateHours = async (req, res) => {
   try {

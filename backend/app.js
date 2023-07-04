@@ -16,7 +16,6 @@ const bodyparser = require("body-parser");
 // log des req et res
 app.use(morgan("dev"));
 
-//origin
 app.use(
   cors({
     origin: "https://alcarian-quai-antique.netlify.app",

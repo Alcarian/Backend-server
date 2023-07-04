@@ -8,6 +8,9 @@
     "server": "node ./backend/server.js",
     "start": "node ./backend/server.js"
   },
+  "config": {
+    "omit": "dev"
+  },  
   "author": "",
   "license": "ISC",
   "dependencies": {

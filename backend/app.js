@@ -18,8 +18,9 @@ app.use(morgan("dev"));
 
 app.use(
   cors({
-    origin: "https://alcarian-quai-antique.netlify.app",
-    // ("https://alcarian-quai-antique.netlify.app", "http://localhost:3000"),
+    origin:
+      // "https://alcarian-quai-antique.netlify.app",
+      ("https://alcarian-quai-antique.netlify.app", "http://localhost:3000"),
     credentials: true,
   })
 );
